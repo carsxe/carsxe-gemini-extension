@@ -1,0 +1,16 @@
+description = "Decode an international (non-US) VIN."
+
+prompt = """
+The user wants to decode an international VIN. The argument provided is: `{{args}}`
+
+If no VIN was provided, ask: "Please provide an international VIN to decode (e.g., `/carsxe:intvin WF0MXXGBWM8R43240`)."
+
+If a VIN was provided, use the `carsxe_intvin` tool with the VIN. Present the decoded data including:
+- Country of manufacture
+- Make, model, year
+- Engine & transmission details
+- Body style
+- Any additional returned attributes
+
+Note: This endpoint is optimized for non-US VINs (European, Asian manufacturers, etc.). Handle errors gracefully.
+"""

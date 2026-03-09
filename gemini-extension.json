@@ -1,0 +1,21 @@
+{
+  "name": "carsxe",
+  "version": "1.0.0",
+  "description": "CarsXE vehicle data APIs for Gemini CLI — decode VINs, look up license plates, get market values, history, recalls, lien and theft, OBD codes, and more.",
+  "contextFileName": "GEMINI.md",
+  "settings": [
+    {
+      "name": "CarsXE API Key",
+      "description": "Your CarsXE API key from https://api.carsxe.com. Sign up at the developer dashboard to get one.",
+      "envVar": "CARSXE_API_KEY",
+      "sensitive": true
+    }
+  ],
+  "mcpServers": {
+    "carsxe": {
+      "command": "node",
+      "args": ["${extensionPath}${/}carsxe-server.js"],
+      "cwd": "${extensionPath}"
+    }
+  }
+}

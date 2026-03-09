@@ -1,0 +1,12 @@
+description = "Validate and set your CarsXE API key."
+
+prompt = """
+The user wants to validate and set their CarsXE API key. The argument provided is: `{{args}}`
+
+If no API key was provided, ask the user to provide one:
+"Please provide your CarsXE API key (e.g., `/carsxe:auth your_api_key_here`). You can get one at https://api.carsxe.com"
+
+If a key was provided, use the `carsxe_auth` tool to validate it. If valid, confirm the key is set and ready to use with all `/carsxe:*` commands. If invalid, inform the user.
+
+Note: The API key is stored securely in the system keychain via the extension settings. To permanently configure it, run: `gemini extensions config carsxe`
+"""

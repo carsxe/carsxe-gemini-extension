@@ -1,0 +1,17 @@
+description = "Look up vehicle information from a license plate number."
+
+prompt = """
+The user wants to look up a vehicle by license plate. The arguments provided are: `{{args}}`
+
+Expected format: PLATE COUNTRY [STATE]
+Examples: `7XER187 US CA` or `AB123CD GB`
+
+Parse the arguments to extract:
+- plate (required): The license plate number
+- country (required): 2-letter country code (e.g., US, GB, DE)
+- state (optional): 2-letter US state code for improved accuracy
+
+If plate or country is missing, ask: "Please provide a plate number and country code (e.g., `/carsxe:plate 7XER187 US CA`)."
+
+Use the `carsxe_plate` tool with the extracted parameters. Present the results including vehicle make, model, year, VIN (if returned), and registration details.
+"""

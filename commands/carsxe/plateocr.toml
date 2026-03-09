@@ -1,0 +1,15 @@
+description = "Extract a license plate number from a photo or image URL."
+
+prompt = """
+The user wants to extract a license plate from an image. The argument provided is: `{{args}}`
+
+If no image URL was provided, ask: "Please provide a publicly accessible image URL containing a license plate (e.g., `/carsxe:plateocr https://example.com/plate-photo.jpg`)."
+
+If an image URL was provided, use the `carsxe_plateocr` tool with the image URL. Present:
+- The extracted plate number
+- Country/region if available
+- Confidence score if available
+- Offer to decode: "Would you like me to look up this plate? I can run `/carsxe:plate {extracted_plate} {country}` for vehicle details."
+
+If the image is unreadable, suggest a clearer, well-lit photo. If no plate is detected, suggest a straight-on angle.
+"""

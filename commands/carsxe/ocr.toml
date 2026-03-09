@@ -1,0 +1,14 @@
+description = "Extract a VIN from a photo or image URL."
+
+prompt = """
+The user wants to extract a VIN from an image. The argument provided is: `{{args}}`
+
+If no image URL was provided, ask: "Please provide a publicly accessible image URL containing a VIN (e.g., `/carsxe:ocr https://example.com/vin-photo.jpg`)."
+
+If an image URL was provided, use the `carsxe_ocr` tool with the image URL. Present:
+- The extracted VIN
+- Confidence score (if available)
+- Offer to decode the VIN: "Would you like me to decode this VIN? I can run `/carsxe:specs {extracted_vin}` for full details."
+
+If the image is unreadable, suggest a clearer photo. If no VIN is detected, suggest a better angle/lighting.
+"""

@@ -1,0 +1,17 @@
+description = "Retrieve a full vehicle history report by VIN."
+
+prompt = """
+The user wants a vehicle history report. The argument provided is: `{{args}}`
+
+If no VIN was provided, ask: "Please provide a VIN to get the vehicle history (e.g., `/carsxe:history WBAFR7C57CC811956`)."
+
+If a VIN was provided, use the `carsxe_history` tool with the VIN. Present the results covering:
+- Ownership history (number of previous owners)
+- Accident/damage records
+- Title status (clean, salvage, rebuilt, flood)
+- Odometer readings
+- Service/maintenance records
+- Theft records
+
+Prominently highlight any red flags such as salvage titles, multiple accidents, or odometer rollback. Handle errors gracefully.
+"""

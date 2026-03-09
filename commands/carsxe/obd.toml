@@ -1,0 +1,16 @@
+description = "Decode an OBD-II diagnostic trouble code (DTC)."
+
+prompt = """
+The user wants to decode an OBD diagnostic code. The argument provided is: `{{args}}`
+
+If no code was provided, ask: "Please provide an OBD-II code to decode (e.g., `/carsxe:obd P0300`)."
+
+If a code was provided, use the `carsxe_obd` tool with the code. Present the decoded information:
+- The code itself
+- Fault description
+- Affected system
+- Possible causes
+- Suggested fixes / next steps
+
+Also note severity — whether the issue requires immediate attention or is a minor concern that can wait. Handle errors gracefully.
+"""

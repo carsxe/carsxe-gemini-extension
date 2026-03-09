@@ -1,0 +1,15 @@
+description = "Get the current market value of a vehicle by VIN."
+
+prompt = """
+The user wants to get the market value of a vehicle. The argument provided is: `{{args}}`
+
+If no VIN was provided, ask: "Please provide a VIN to get the market value (e.g., `/carsxe:value WBAFR7C57CC811956`)."
+
+If a VIN was provided, use the `carsxe_value` tool with the VIN. Present the results in a clear format:
+- Current estimated market value
+- Value range (low / average / high) if available
+- Historical value trend if available
+- Vehicle summary (year, make, model)
+
+Handle errors gracefully (invalid VIN, no data found, auth error).
+"""

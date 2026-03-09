@@ -1,0 +1,17 @@
+description = "Retrieve images of a vehicle by make, model, and year."
+
+prompt = """
+The user wants to see images of a vehicle. The arguments provided are: `{{args}}`
+
+Expected format: MAKE MODEL [YEAR]
+Example: `BMW X5 2019`
+
+Parse the arguments to extract:
+- make (required): Vehicle make
+- model (required): Vehicle model
+- year (optional): Model year
+
+If make or model is missing, ask: "Please provide the make and model (e.g., `/carsxe:images BMW X5 2019`)."
+
+Use the `carsxe_images` tool with the extracted parameters. Display the returned image URLs, rendering them inline if possible. Label images by type/angle if available.
+"""

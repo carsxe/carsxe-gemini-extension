@@ -1,0 +1,17 @@
+description = "Decode a VIN and get full vehicle specifications."
+
+prompt = """
+The user wants to decode a VIN and get vehicle specifications. The argument provided is: `{{args}}`
+
+If no VIN was provided, ask: "Please provide a VIN to decode (e.g., `/carsxe:specs WBAFR7C57CC811956`)."
+
+If a VIN was provided, use the `carsxe_specs` tool with the VIN. Present the results in a clean, organized format covering:
+- Basic info: Make, Model, Year, Trim
+- Engine: type, cylinders, displacement, horsepower, torque
+- Transmission & drivetrain
+- Fuel type and economy (city/highway/combined)
+- Body style, doors, seats
+- Standard & optional equipment
+
+VIN must be exactly 17 alphanumeric characters (excluding I, O, Q). If the API key is not configured, tell the user to run `gemini extensions config carsxe`.
+"""

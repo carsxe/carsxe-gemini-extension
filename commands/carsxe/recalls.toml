@@ -1,0 +1,13 @@
+description = "Check for open safety recalls on a vehicle by VIN."
+
+prompt = """
+The user wants to check for vehicle recalls. The argument provided is: `{{args}}`
+
+If no VIN was provided, ask: "Please provide a VIN to check for recalls (e.g., `/carsxe:recalls WBAFR7C57CC811956`)."
+
+If a VIN was provided, use the `carsxe_recalls` tool with the VIN. Present the results including:
+- Total number of open recalls
+- For each recall: campaign number, component, defect description, remedy, date
+
+If no recalls are found, clearly confirm the vehicle has no open recalls. Emphasize any safety-critical recalls. Handle errors gracefully.
+"""

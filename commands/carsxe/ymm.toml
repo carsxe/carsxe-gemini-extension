@@ -1,0 +1,26 @@
+description = "Look up vehicle data by year, make, and model."
+
+prompt = """
+The user wants to look up a vehicle by year, make, and model. The arguments provided are: `{{args}}`
+
+Expected format: YEAR MAKE MODEL [TRIM]
+Example: `2020 Toyota Camry LE`
+
+Parse the arguments to extract:
+- year (required): 4-digit model year
+- make (required): Vehicle make
+- model (required): Vehicle model
+- trim (optional): Specific trim level
+
+If any required field is missing, ask: "Please provide the year, make, and model (e.g., `/carsxe:ymm 2020 Toyota Camry LE`)."
+
+Use the `carsxe_ymm` tool with the extracted parameters. Present:
+- Available trims (if no trim was specified)
+- Engine options
+- Transmission & drivetrain
+- Fuel type and economy
+- Body style & dimensions
+- Standard features
+
+Handle errors gracefully.
+"""

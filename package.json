@@ -1,0 +1,41 @@
+{
+  "name": "carsxe-gemini-extension",
+  "version": "1.0.0",
+  "description": "CarsXE vehicle data APIs for Gemini CLI",
+  "type": "module",
+  "main": "carsxe-server.js",
+  "scripts": {
+    "start": "node carsxe-server.js"
+  },
+  "keywords": [
+    "gemini",
+    "gemini-cli",
+    "extension",
+    "carsxe",
+    "vin",
+    "vehicle",
+    "specs",
+    "plate-decoder",
+    "market-value",
+    "vehicle-history",
+    "recalls",
+    "lien",
+    "theft",
+    "obd",
+    "vin-ocr",
+    "plate-recognition",
+    "year-make-model",
+    "international-vin",
+    "images"
+  ],
+  "author": {
+    "name": "CarsXE",
+    "email": "devops@carsxe.com"
+  },
+  "license": "MIT",
+  "homepage": "https://api.carsxe.com",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "zod": "^3.24.4"
+  }
+}

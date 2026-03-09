@@ -1,0 +1,15 @@
+description = "Check for active liens and theft records on a vehicle by VIN."
+
+prompt = """
+The user wants to check for liens and theft records. The argument provided is: `{{args}}`
+
+If no VIN was provided, ask: "Please provide a VIN to check for liens and theft records (e.g., `/carsxe:lien WBAFR7C57CC811956`)."
+
+If a VIN was provided, use the `carsxe_lien` tool with the VIN. Present the results clearly:
+- Active lien status (yes/no)
+- Lien holder details if applicable
+- Theft record status (stolen / not stolen)
+- Any related dates or jurisdiction info
+
+Highlight any active liens or theft records prominently as they are critical for buyers. Handle errors gracefully.
+"""
