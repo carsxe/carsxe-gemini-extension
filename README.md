@@ -24,6 +24,41 @@ Access the full suite of [CarsXE](https://api.carsxe.com) vehicle data APIs dire
 
 All commands also have corresponding **skills** that Gemini auto-invokes when it detects relevant context in your conversation.
 
+## Prerequisites
+
+Before installing the extension, make sure you have the [Gemini CLI](https://github.com/google-gemini/gemini-cli) installed and your `GEMINI_API_KEY` environment variable set.
+
+You can get a Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey).
+
+**macOS / Linux — add to your shell profile for persistence:**
+
+```bash
+echo 'export GEMINI_API_KEY=your_gemini_api_key_here' >> ~/.bashrc
+source ~/.bashrc
+```
+
+> If you use Zsh (default on macOS), replace `~/.bashrc` with `~/.zshrc`.
+
+**Windows — PowerShell (current session):**
+
+```powershell
+$env:GEMINI_API_KEY="your_gemini_api_key_here"
+```
+
+**Windows — PowerShell (persist across sessions):**
+
+```powershell
+[System.Environment]::SetEnvironmentVariable("GEMINI_API_KEY","your_gemini_api_key_here","User")
+```
+
+**Windows — Command Prompt:**
+
+```cmd
+setx GEMINI_API_KEY "your_gemini_api_key_here"
+```
+
+> After `setx`, restart your terminal for the variable to take effect.
+
 ## Installation
 
 Install the extension from the GitHub repository:
