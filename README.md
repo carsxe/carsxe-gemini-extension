@@ -29,7 +29,7 @@ All commands also have corresponding **skills** that Gemini auto-invokes when it
 Install the extension from the GitHub repository:
 
 ```bash
-gemini extensions install carsxe/carsxe-gemini-extension
+gemini extensions install https://github.com/carsxe/carsxe-gemini-extension.git
 ```
 
 ## Setup
