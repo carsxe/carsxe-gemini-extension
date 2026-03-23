@@ -6,7 +6,7 @@
   "settings": [
     {
       "name": "CarsXE API Key",
-      "description": "Your CarsXE API key from https://api.carsxe.com. Sign up at the developer dashboard to get one. Then enter it here:",
+      "description": "Get your CarsXE API key from https://api.carsxe.com/dashboard/developer. Then enter it here:",
       "envVar": "CARSXE_API_KEY",
       "sensitive": true
     }
