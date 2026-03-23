@@ -67,10 +67,9 @@ Install the extension from the GitHub repository:
 gemini extensions install https://github.com/carsxe/carsxe-gemini-extension.git
 ```
 
-## Setup
+During installation, Gemini CLI prompts you for your CarsXE API key. If you do not have a key yet, sign up and get one from the [CarsXE developer dashboard](https://api.carsxe.com/dashboard/developer).
 
-1. Sign up at [api.carsxe.com](https://api.carsxe.com) and get your API key from the developer dashboard.
-2. Configure the extension with your API key:
+If you skipped that prompt, or you want to change your API key after installing, run:
 
 ```bash
 gemini extensions config carsxe
