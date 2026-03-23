@@ -1,4 +1,4 @@
-[![Gemini CLI Extension](https://img.shields.io/badge/Gemini_CLI-Extension-4285F4?logo=google&logoColor=white)](https://geminicli.com)
+[![Gemini CLI Extension](https://img.shields.io/badge/Gemini_CLI-Extension-4285F4?logo=google&logoColor=white)](https://geminicli.com/extensions/?name=carsxecarsxe-gemini-extension)
 
 # CarsXE Extension for Gemini CLI
 
