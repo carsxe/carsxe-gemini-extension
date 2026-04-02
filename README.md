@@ -11,7 +11,7 @@ Access the full suite of [CarsXE](https://api.carsxe.com) vehicle data APIs dire
 | `/carsxe:auth <API_KEY>`                   | Validate and set your CarsXE API key          |
 | `/carsxe:specs <VIN>`                      | Decode a VIN with full vehicle specifications |
 | `/carsxe:plate <PLATE> <COUNTRY> [STATE]`  | Look up a vehicle by license plate            |
-| `/carsxe:value <VIN>`                      | Get current market value                      |
+| `/carsxe:value <VIN> [STATE] [MILEAGE] [CONDITION]` | Get current market value          |
 | `/carsxe:history <VIN>`                    | Full vehicle history report                   |
 | `/carsxe:images <MAKE> <MODEL> [YEAR]`     | Retrieve vehicle photos                       |
 | `/carsxe:recalls <VIN>`                    | Check for open safety recalls                 |
@@ -95,7 +95,10 @@ This stores your API key securely in the system keychain.
 
 ```
 /carsxe:value WBAFR7C57CC811956
+/carsxe:value WBAFR7C57CC811956 CA 45000 clean
 ```
+
+Optional params: state (e.g. `CA`), mileage, condition (`excellent` | `clean` | `average` | `rough`)
 
 ### Vehicle history report
 

@@ -8,7 +8,10 @@ description: >
 
 When the user asks about a vehicle's value and provides a VIN:
 
-1. Use the `carsxe_value` tool with the VIN provided.
+1. Use the `carsxe_value` tool with the VIN provided. Optionally include:
+   - `state` — US state code (e.g., `CA`, `TX`) for regional pricing adjustments
+   - `mileage` — current mileage of the vehicle to adjust the value
+   - `condition` — overall condition: `excellent`, `clean`, `average`, or `rough`
 2. Present the results including:
    - Current estimated market value
    - Value range (low / average / high) if available

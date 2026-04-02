@@ -177,11 +177,28 @@ server.registerTool(
         .string()
         .length(17)
         .describe("The 17-character Vehicle Identification Number"),
+      state: z
+        .string()
+        .optional()
+        .describe("US state code for regional pricing adjustments (e.g., CA, TX)"),
+      mileage: z
+        .number()
+        .optional()
+        .describe("Current mileage of the vehicle used to adjust the market value"),
+      condition: z
+        .enum(["excellent", "clean", "average", "rough"])
+        .optional()
+        .describe("Overall condition of the vehicle"),
     },
   },
-  async ({ vin }) => {
+  async ({ vin, state, mileage, condition }) => {
     try {
-      const data = await apiGet("/v2/marketvalue", { vin });
+      const data = await apiGet("/v2/marketvalue", {
+        vin,
+        state,
+        mileage: mileage !== undefined ? String(mileage) : undefined,
+        condition,
+      });
       return textResult(data);
     } catch (err) {
       return errorResult(err);
