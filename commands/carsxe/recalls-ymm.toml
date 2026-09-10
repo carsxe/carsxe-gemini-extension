@@ -1,0 +1,23 @@
+description = "Check safety recalls by year, make, and model (no VIN)."
+
+prompt = """
+The user wants to check safety recalls for a model line (no VIN). The arguments provided are: `{{args}}`
+
+Expected format: YEAR MAKE MODEL
+Example: `2023 Toyota Camry`
+
+Parse the arguments to extract:
+- year (required): 4-digit model year (1900 or later)
+- make (required): Vehicle make
+- model (required): Vehicle model
+
+If year, make, or model is missing, ask: "Please provide year, make, and model (e.g., `/carsxe:recalls-ymm 2023 Toyota Camry`)."
+
+Use the `carsxe_recalls_ymm` tool with the extracted parameters. Present:
+- Year, make, and model (normalized)
+- Number of recalls (`recall_count`) and whether any exist (`has_recalls`)
+- For each recall: NHTSA campaign number, manufacturer, component, summary, consequence, remedy, report date
+- Highlight `park_it`, `park_outside`, or over-the-air remedy flags when true
+
+If no recalls are found, clearly confirm the model line has no safety recalls. Emphasize this is a model-line result, not a specific vehicle. For a single VIN use `/carsxe:recalls`. For many VINs use `/carsxe:recalls-batch`. Handle errors gracefully.
+"""

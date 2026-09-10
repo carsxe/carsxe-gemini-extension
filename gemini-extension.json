@@ -1,7 +1,7 @@
 {
   "name": "carsxe",
-  "version": "1.0.0",
-  "description": "CarsXE vehicle data APIs for Gemini CLI — decode VINs, look up license plates, get market values, history, recalls, lien and theft, OBD codes, and more.",
+  "version": "1.2.0",
+  "description": "CarsXE vehicle data APIs for Gemini CLI — decode VINs, look up license plates, get market values, history, recalls (VIN, YMM, or batch), YMM options, ownership, lien and theft, OBD codes, and more.",
   "contextFileName": "GEMINI.md",
   "settings": [
     {
