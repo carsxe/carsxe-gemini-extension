@@ -1,6 +1,6 @@
 {
   "name": "carsxe-gemini-extension",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "CarsXE vehicle data APIs for Gemini CLI",
   "type": "module",
   "main": "carsxe-server.js",
@@ -25,6 +25,10 @@
     "vin-ocr",
     "plate-recognition",
     "year-make-model",
+    "ymm-options",
+    "recalls-ymm",
+    "recalls-batch",
+    "ownership",
     "international-vin",
     "images"
   ],

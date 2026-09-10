@@ -4,7 +4,7 @@ import { z } from "zod";
 
 const server = new McpServer({
   name: "carsxe",
-  version: "1.0.0",
+  version: "1.2.0",
 });
 
 const API_BASE = "https://api.carsxe.com";
@@ -52,6 +52,24 @@ async function apiPost(path, body, params = {}) {
   });
   const data = await res.json();
   return data;
+}
+
+async function apiGetText(path, params = {}) {
+  const key = getApiKey();
+  const url = new URL(path, API_BASE);
+  url.searchParams.set("key", key);
+  url.searchParams.set("source", SOURCE);
+  for (const [k, v] of Object.entries(params)) {
+    if (v !== undefined && v !== null && v !== "") {
+      url.searchParams.set(k, String(v));
+    }
+  }
+  const res = await fetch(url.toString());
+  const contentType = res.headers.get("content-type") || "";
+  if (contentType.includes("application/json")) {
+    return await res.json();
+  }
+  return await res.text();
 }
 
 function textResult(data) {
@@ -429,6 +447,380 @@ server.registerTool(
   async ({ year, make, model, trim }) => {
     try {
       const data = await apiGet("/v1/ymm", { year, make, model, trim });
+      return textResult(data);
+    } catch (err) {
+      return errorResult(err);
+    }
+  },
+);
+
+// --- Tool: Recalls by Year / Make / Model ---
+server.registerTool(
+  "carsxe_recalls_ymm",
+  {
+    title: "CarsXE Recalls by Year/Make/Model",
+    description:
+      "Get safety recall information by year, make, and model. No VIN required — this is a model-line search, not a specific vehicle.",
+    inputSchema: {
+      year: z
+        .string()
+        .describe("4-digit model year (e.g., 2019). Must be 1900 or later."),
+      make: z.string().describe("Vehicle make (e.g., Toyota)"),
+      model: z.string().describe("Vehicle model (e.g., Camry)"),
+    },
+  },
+  async ({ year, make, model }) => {
+    try {
+      const data = await apiGet("/v1/recalls-ymm", { year, make, model });
+      return textResult(data);
+    } catch (err) {
+      return errorResult(err);
+    }
+  },
+);
+
+const recallsBatchVinsSchema = z
+  .union([
+    z.array(z.string()),
+    z.string().transform((value) =>
+      value
+        .split(/[\s,]+/)
+        .map((vin) => vin.trim())
+        .filter(Boolean),
+    ),
+  ])
+  .optional()
+  .describe(
+    "17-character VINs as an array or comma-separated string. Combine with csv/csvUrl up to 10,000 unique VINs.",
+  );
+
+// --- Tool: Recalls Batch Submit ---
+server.registerTool(
+  "carsxe_recalls_batch_submit",
+  {
+    title: "CarsXE Submit Recalls Batch",
+    description:
+      "Submit an async bulk recall check for up to 10,000 VINs (JSON list, inline CSV, and/or CSV URL).",
+    inputSchema: {
+      vins: recallsBatchVinsSchema,
+      csv: z
+        .string()
+        .optional()
+        .describe("Inline CSV of VINs (one per line or a vin column)"),
+      csvUrl: z
+        .string()
+        .url()
+        .optional()
+        .describe(
+          "HTTPS URL to a CSV of VINs (Google Sheets, S3, Dropbox, etc.)",
+        ),
+      webhookUrl: z
+        .string()
+        .url()
+        .optional()
+        .describe("HTTPS webhook URL called when the batch finishes"),
+    },
+  },
+  async ({ vins, csv, csvUrl, webhookUrl }) => {
+    try {
+      if (!vins?.length && !csv && !csvUrl) {
+        return errorResult(
+          new Error("Provide at least one of vins, csv, or csvUrl."),
+        );
+      }
+      const body = {};
+      if (vins?.length) body.vins = vins;
+      if (csv) body.csv = csv;
+      if (csvUrl) body.csvUrl = csvUrl;
+      if (webhookUrl) body.webhookUrl = webhookUrl;
+      const data = await apiPost("/v1/recalls-batch/submit", body);
+      return textResult(data);
+    } catch (err) {
+      return errorResult(err);
+    }
+  },
+);
+
+// --- Tool: Recalls Batch Status ---
+server.registerTool(
+  "carsxe_recalls_batch_status",
+  {
+    title: "CarsXE Recalls Batch Status",
+    description: "Check the status of a previously submitted recalls batch.",
+    inputSchema: {
+      batchId: z
+        .string()
+        .describe("Batch ID returned by carsxe_recalls_batch_submit"),
+    },
+  },
+  async ({ batchId }) => {
+    try {
+      const data = await apiGet("/v1/recalls-batch/status", { batchId });
+      return textResult(data);
+    } catch (err) {
+      return errorResult(err);
+    }
+  },
+);
+
+// --- Tool: Recalls Batch Results ---
+server.registerTool(
+  "carsxe_recalls_batch_results",
+  {
+    title: "CarsXE Recalls Batch Results",
+    description:
+      "Fetch completed bulk recall results as JSON (use after status is completed or partial).",
+    inputSchema: {
+      batchId: z
+        .string()
+        .describe("Batch ID returned by carsxe_recalls_batch_submit"),
+    },
+  },
+  async ({ batchId }) => {
+    try {
+      const data = await apiGet("/v1/recalls-batch/results", { batchId });
+      return textResult(data);
+    } catch (err) {
+      return errorResult(err);
+    }
+  },
+);
+
+// --- Tool: Recalls Batch Download ---
+server.registerTool(
+  "carsxe_recalls_batch_download",
+  {
+    title: "CarsXE Download Recalls Batch CSV",
+    description:
+      "Download completed bulk recall results as CSV (use after status is completed or partial).",
+    inputSchema: {
+      batchId: z
+        .string()
+        .describe("Batch ID returned by carsxe_recalls_batch_submit"),
+    },
+  },
+  async ({ batchId }) => {
+    try {
+      const data = await apiGetText("/v1/recalls-batch/download", { batchId });
+      if (typeof data === "string") {
+        return { content: [{ type: "text", text: data }] };
+      }
+      return textResult(data);
+    } catch (err) {
+      return errorResult(err);
+    }
+  },
+);
+
+// --- Tool: Year / Make / Model Options ---
+server.registerTool(
+  "carsxe_ymm_options",
+  {
+    title: "CarsXE Year/Make/Model Options",
+    description:
+      "List cascading year, make, model, trim, or variant options for dropdowns. Omit filters to list years; add year for makes, make for models, then model for variants.",
+    inputSchema: {
+      dimension: z
+        .enum(["years", "makes", "models", "trims", "variants"])
+        .optional()
+        .describe(
+          "Force one list: years, makes, models, trims, or variants. When omitted, the layer is inferred from the filters.",
+        ),
+      year: z.string().optional().describe("Filter by model year"),
+      make: z
+        .string()
+        .optional()
+        .describe("Filter by make (required for models)"),
+      model: z
+        .string()
+        .optional()
+        .describe("Filter by model (required for trims; used for variants)"),
+      trim: z
+        .string()
+        .optional()
+        .describe("Substring filter on trim or variant names"),
+    },
+  },
+  async ({ dimension, year, make, model, trim }) => {
+    try {
+      const data = await apiGet("/v1/ymm-options", {
+        dimension,
+        year,
+        make,
+        model,
+        trim,
+      });
+      return textResult(data);
+    } catch (err) {
+      return errorResult(err);
+    }
+  },
+);
+
+const OWNERSHIP_INCLUDE_HELP =
+  "Comma-separated subset of demographics,emails,phones,vehicle_history. Omit to return everything.";
+
+// --- Tool: Ownership by VIN (Enterprise) ---
+server.registerTool(
+  "carsxe_ownership_vin",
+  {
+    title: "CarsXE Ownership by VIN",
+    description:
+      "Enterprise: look up registered owner(s) for a VIN, including contact info and vehicle history.",
+    inputSchema: {
+      vin: z
+        .string()
+        .length(17)
+        .describe("The 17-character Vehicle Identification Number"),
+      include: z.string().optional().describe(OWNERSHIP_INCLUDE_HELP),
+    },
+  },
+  async ({ vin, include }) => {
+    try {
+      const data = await apiGet("/v1/ownership/vin", { vin, include });
+      return textResult(data);
+    } catch (err) {
+      return errorResult(err);
+    }
+  },
+);
+
+// --- Tool: Ownership by Person (Enterprise) ---
+server.registerTool(
+  "carsxe_ownership_person",
+  {
+    title: "CarsXE Ownership by Person",
+    description:
+      "Enterprise: look up contact details and linked vehicles for a name + street address + ZIP.",
+    inputSchema: {
+      firstName: z
+        .string()
+        .max(50)
+        .describe("First name (max 50 characters)"),
+      lastName: z.string().max(50).describe("Last name (max 50 characters)"),
+      address: z
+        .string()
+        .max(100)
+        .describe("Street address only, no city/state (max 100 characters)"),
+      zip: z.string().describe("5-digit US ZIP, optionally ZIP+4"),
+      include: z.string().optional().describe(OWNERSHIP_INCLUDE_HELP),
+    },
+  },
+  async ({ firstName, lastName, address, zip, include }) => {
+    try {
+      const data = await apiGet("/v1/ownership/person", {
+        first_name: firstName,
+        last_name: lastName,
+        address,
+        zip,
+        include,
+      });
+      return textResult(data);
+    } catch (err) {
+      return errorResult(err);
+    }
+  },
+);
+
+// --- Tool: Ownership by Address (Enterprise) ---
+server.registerTool(
+  "carsxe_ownership_address",
+  {
+    title: "CarsXE Ownership by Address",
+    description:
+      "Enterprise: look up residents at a street address + ZIP, with contact info and vehicle history.",
+    inputSchema: {
+      address: z
+        .string()
+        .max(100)
+        .describe("Street address only, no city/state (max 100 characters)"),
+      zip: z.string().describe("5-digit US ZIP, optionally ZIP+4"),
+      include: z.string().optional().describe(OWNERSHIP_INCLUDE_HELP),
+      variant: z
+        .string()
+        .optional()
+        .describe(
+          "Legacy alias (vehicle_history or compliance). Prefer include.",
+        ),
+    },
+  },
+  async ({ address, zip, include, variant }) => {
+    try {
+      const data = await apiGet("/v1/ownership/address", {
+        address,
+        zip,
+        include,
+        variant,
+      });
+      return textResult(data);
+    } catch (err) {
+      return errorResult(err);
+    }
+  },
+);
+
+// --- Tool: Ownership by ZIP (Enterprise) ---
+server.registerTool(
+  "carsxe_ownership_zip",
+  {
+    title: "CarsXE Ownership by ZIP",
+    description:
+      "Enterprise: search people in a 5-digit ZIP with optional gender, age, and income filters. Billed per record returned (default page size 15, max 100).",
+    inputSchema: {
+      zip: z.string().describe("Exactly 5-digit US ZIP"),
+      gender: z.string().optional().describe("M or F"),
+      minAge: z
+        .number()
+        .int()
+        .optional()
+        .describe("Minimum age (whole number)"),
+      maxAge: z
+        .number()
+        .int()
+        .optional()
+        .describe("Maximum age (whole number)"),
+      income: z
+        .string()
+        .optional()
+        .describe("Income code or label (e.g. F, K, $50,000–$59,999)"),
+      page: z.number().int().min(1).optional().describe("Page number (default 1)"),
+      limit: z
+        .number()
+        .int()
+        .min(1)
+        .max(100)
+        .optional()
+        .describe("Page size (default 15, max 100)"),
+      include: z.string().optional().describe(OWNERSHIP_INCLUDE_HELP),
+      variant: z
+        .string()
+        .optional()
+        .describe("Legacy alias (vehicle_history). Prefer include."),
+    },
+  },
+  async ({
+    zip,
+    gender,
+    minAge,
+    maxAge,
+    income,
+    page,
+    limit,
+    include,
+    variant,
+  }) => {
+    try {
+      const data = await apiGet("/v1/ownership/zip", {
+        zip,
+        gender,
+        min_age: minAge,
+        max_age: maxAge,
+        income,
+        page,
+        limit,
+        include,
+        variant,
+      });
       return textResult(data);
     } catch (err) {
       return errorResult(err);

@@ -10,4 +10,6 @@ If a VIN was provided, use the `carsxe_recalls` tool with the VIN. Present the r
 - For each recall: campaign number, component, defect description, remedy, date
 
 If no recalls are found, clearly confirm the vehicle has no open recalls. Emphasize any safety-critical recalls. Handle errors gracefully.
+
+For year/make/model with no VIN use `/carsxe:recalls-ymm`. For many VINs at once use `/carsxe:recalls-batch`.
 """

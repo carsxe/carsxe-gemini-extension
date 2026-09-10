@@ -22,5 +22,5 @@ Use the `carsxe_ymm` tool with the extracted parameters. Present:
 - Body style & dimensions
 - Standard features
 
-Handle errors gracefully.
+For cascading year/make/model/trim/variant lists (not full specs) use `/carsxe:ymm-options`. Handle errors gracefully.
 """

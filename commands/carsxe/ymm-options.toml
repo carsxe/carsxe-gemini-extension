@@ -1,0 +1,33 @@
+description = "List year, make, model, trim, or variant options for dropdowns."
+
+prompt = """
+The user wants cascading year/make/model/trim/variant options. The arguments provided are: `{{args}}`
+
+Parse optional filters:
+- `dimension` (optional): `years` | `makes` | `models` | `trims` | `variants`
+- `year` (optional): 4-digit model year
+- `make` (optional): manufacturer (required for `dimension=models`)
+- `model` (optional): model name (required for `dimension=trims`; used for variants)
+- `trim` (optional): substring filter on trim or variant names
+
+Examples:
+- `/carsxe:ymm-options` → list years
+- `/carsxe:ymm-options 2023` → makes for 2023
+- `/carsxe:ymm-options 2023 Toyota` → models for 2023 Toyota
+- `/carsxe:ymm-options 2023 Toyota Camry` → variants
+- `/carsxe:ymm-options dimension=variants year=2025 make=Lexus`
+
+Use the `carsxe_ymm_options` tool. Include only the filters the user provided.
+
+When `dimension` is omitted, the API returns one inferred list:
+- no filters → years
+- year → makes
+- make → models
+- make + model → variants
+
+Present the returned list (`years`, `makes`, `models`, `trims`, or `variants`) as a clean bullet list. If `message` is present, show it. If `modelCount` is present (bulk variants), mention it — that value is the billed unit count.
+
+One list per request. Offer to fetch the next dropdown level or to run `/carsxe:ymm` for full specs of a chosen year/make/model.
+
+Bulk variants (`dimension=variants` + `year` + `make`, no `model`) bills 1 unit per model (`modelCount`). Warn the user before making that call. Handle errors gracefully.
+"""
