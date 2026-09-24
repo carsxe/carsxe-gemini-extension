@@ -2,25 +2,25 @@
 
 # CarsXE Extension for Gemini CLI
 
-Access the full suite of [CarsXE](https://api.carsxe.com) vehicle data APIs directly from Gemini CLI. Decode VINs, look up license plates, get market values, vehicle history, recalls (VIN, YMM, or batch), YMM options, ownership, lien and theft records, OBD codes, and more.
+Access the full suite of [CarsXE](https://carsxe.com) vehicle data APIs directly from Gemini CLI. Decode VINs, look up license plates, get market values, vehicle history, recalls (VIN, YMM, or batch), YMM options, ownership, lien and theft records, OBD codes, and more.
 
 ## Features
 
 | Command                                    | Description                                   |
 | ------------------------------------------ | --------------------------------------------- |
 | `/carsxe:auth <API_KEY>`                   | Validate and set your CarsXE API key          |
-| `/carsxe:specs <VIN>`                      | Decode a VIN with full vehicle specifications |
-| `/carsxe:plate <PLATE> <COUNTRY> [STATE]`  | Look up a vehicle by license plate            |
-| `/carsxe:value <VIN> [STATE] [MILEAGE] [CONDITION]` | Get current market value          |
-| `/carsxe:history <VIN>`                    | Full vehicle history report                   |
-| `/carsxe:images <MAKE> <MODEL> [YEAR]`     | Retrieve vehicle photos                       |
-| `/carsxe:recalls <VIN>`                    | Check for open safety recalls                 |
-| `/carsxe:recalls-ymm <YEAR> <MAKE> <MODEL>` | Check recalls by year/make/model (no VIN) |
-| `/carsxe:recalls-batch <ACTION> ...`       | Bulk recalls: submit / status / results / download |
-| `/carsxe:intvin <VIN>`                     | Decode an international (non-US) VIN          |
+| `/carsxe:specs <VIN>`                      | Decode a VIN with full vehicle specifications ([Vehicle Specifications](https://carsxe.com/vehicle-specifications)) |
+| `/carsxe:plate <PLATE> <COUNTRY> [STATE]`  | Look up a vehicle by license plate ([Vehicle Plate Decoder](https://carsxe.com/vehicle-plate-decoder)) |
+| `/carsxe:value <VIN> [STATE] [MILEAGE] [CONDITION]` | Get current market value ([Vehicle Market Value](https://carsxe.com/vehicle-market-value)) |
+| `/carsxe:history <VIN>`                    | Full vehicle history report ([Vehicle History](https://carsxe.com/vehicle-history)) |
+| `/carsxe:images <MAKE> <MODEL> [YEAR]`     | Retrieve vehicle photos ([Vehicle Images](https://carsxe.com/vehicle-images)) |
+| `/carsxe:recalls <VIN>`                    | Check for open safety recalls ([Vehicle Recalls](https://carsxe.com/vehicle-recalls)) |
+| `/carsxe:recalls-ymm <YEAR> <MAKE> <MODEL>` | Check recalls by year/make/model (no VIN) ([Vehicle Recalls](https://carsxe.com/vehicle-recalls)) |
+| `/carsxe:recalls-batch <ACTION> ...`       | Bulk recalls: submit / status / results / download ([Vehicle Recalls](https://carsxe.com/vehicle-recalls)) |
+| `/carsxe:intvin <VIN>`                     | Decode an international (non-US) VIN ([International VIN Decoder](https://carsxe.com/international-vin-decoder)) |
 | `/carsxe:ocr <IMAGE_URL>`                  | Extract a VIN from a photo (OCR)              |
 | `/carsxe:lien <VIN>`                       | Check for liens and theft records             |
-| `/carsxe:plateocr <IMAGE_URL>`             | Extract a plate number from a photo           |
+| `/carsxe:plateocr <IMAGE_URL>`             | Extract a plate number from a photo ([Vehicle Plate Decoder](https://carsxe.com/vehicle-plate-decoder)) |
 | `/carsxe:ymm <YEAR> <MAKE> <MODEL> [TRIM]` | Look up by Year/Make/Model                    |
 | `/carsxe:ymm-options [YEAR] [MAKE] [MODEL]` | List year/make/model/trim/variant options |
 | `/carsxe:ownership <TYPE> ...`             | Owner & resident lookup (Enterprise)      |
@@ -204,7 +204,17 @@ Gemini will automatically use the CarsXE tools when it detects relevant queries.
 
 ## API Documentation
 
-Full API documentation is available at [api.carsxe.com/docs](https://api.carsxe.com/docs).
+Full API documentation is available at [docs.carsxe.com](https://docs.carsxe.com).
+
+### Products
+
+- [Vehicle History](https://carsxe.com/vehicle-history)
+- [Vehicle Plate Decoder](https://carsxe.com/vehicle-plate-decoder)
+- [Vehicle Specifications](https://carsxe.com/vehicle-specifications)
+- [International VIN Decoder](https://carsxe.com/international-vin-decoder)
+- [Vehicle Images](https://carsxe.com/vehicle-images)
+- [Vehicle Recalls](https://carsxe.com/vehicle-recalls)
+- [Vehicle Market Value](https://carsxe.com/vehicle-market-value)
 
 ## License
 
